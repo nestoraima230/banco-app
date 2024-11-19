@@ -25,12 +25,9 @@ Banco App es una aplicación de banca en línea que permite a los usuarios reali
 
 ## Instalación y Uso
 
-- **1. Clonar el repositorio**: git clone https://github.com/tu-usuario/banco-app.git
+- **1. Clonar el repositorio**: git clone https://github.com/nestoraima230/banco-app.git
 - **2. Instalar las dependencias**: cd banco-app && npm install
 - **3. Configurar las variables de entorno en el archivo .env**
-- **4. Iniciar el servidor backend**: npm run start:backend
-- **4. Iniciar el servidor frontend**: npm run start:frontend
-- **5. Acceder a la aplicación en el navegador**: http://localhost:3000
 
 ## Contribución
 
