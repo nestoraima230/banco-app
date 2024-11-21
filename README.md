@@ -14,6 +14,7 @@ Banco App es una aplicación de banca en línea que permite a los usuarios reali
 
 ## Enlaces del proyecto
 - **Prototipo del sitio web**:
+- **Repositorio de la API**: https://github.com/nestoraima230/api-bank
 - **API URL**:
   
 ## Tecnologías Utilizadas
