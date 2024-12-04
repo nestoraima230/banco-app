@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transferencias - MyBank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/custom-style.css">
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">MYBANK</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="movimientos.html">Movimientos</a></li>
+          <li class="nav-item"><a class="nav-link" href="agregar-tarjeta.html">Agregar Tarjeta</a></li>
+          <li class="nav-item"><a class="nav-link" href="realizar-pagos.html">Realizar Pagos</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="javascript:void(0);" onclick="cerrarSesion()">Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2 class="text-center text-primary fw-bold">Realiza una Transferencia</h2>
+    <form id="form-transferencia">
+      <div class="mb-3">
+        <label for="emailDestinatario" class="form-label">Correo del Destinatario</label>
+        <input type="email" class="form-control" id="emailDestinatario" placeholder="correo@ejemplo.com" required>
+      </div>
+      <div class="mb-3">
+        <label for="monto" class="form-label">Monto a Transferir</label>
+        <input type="number" class="form-control" id="monto" placeholder="Monto" required>
+      </div>
+      <div class="mb-3">
+        <label for="mensaje" class="form-label">Mensaje Opcional</label>
+        <textarea class="form-control" id="mensaje" rows="3" placeholder="Mensaje"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 mt-3">Realizar Transferencia</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('form-transferencia').addEventListener('submit', function(event) {
+      event.preventDefault();
+    
+      alert('Transferencia realizada con éxito');
+    });
+  </script>
+</body>
+</html>

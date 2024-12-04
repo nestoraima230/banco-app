@@ -1,1 +1,32 @@
- 
+body {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  h1, h2 {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .card {
+    border: none;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .navbar {
+    font-size: 16px;
+  }
+  
+  a.nav-link {
+    color: #ffffff;
+  }
+  
+  a.nav-link:hover {
+    color: #dfe9f3;
+  }
