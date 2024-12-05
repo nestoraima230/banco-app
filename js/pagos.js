@@ -1,53 +1,51 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const paymentForm = document.getElementById("paymentForm");
-    const paymentMethod = document.getElementById("paymentMethod");
-    const confirmationMessage = document.getElementById("confirmationMessage");
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-  
-    if (!user) {
-      alert("Debe iniciar sesión.");
-      window.location.href = "index.html";
-      return;
-    }
-    if (user.cards?.length > 0) {
-      user.cards.forEach(card => {
-        const option = document.createElement("option");
-        option.value = card.number;
-        option.textContent = Tarjeta terminada en ${card.number.slice(-4)};
-        paymentMethod.appendChild(option);
+  const paymentForm = document.querySelector("form");
+  const paymentMethod = document.getElementById("payment-method");
+
+  const userId = localStorage.getItem("userId"); 
+
+  if (!userId) {
+    alert("Debe iniciar sesión.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  paymentForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const selectedMethod = paymentMethod.value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const description = `Pago realizado con ${selectedMethod === "saldo" ? "saldo" : "tarjeta"}`;
+
+    const payload = {
+      userId,
+      paymentMethodId: selectedMethod === "saldo" ? 1 : 2, // 1: Saldo, 2: Tarjeta
+      amount,
+      description,
+      cardId: selectedMethod === "tarjeta" ? getCardIdFromSelection() : null,
+    };
+
+    try {
+      const response = await fetch("https://api-bank-production.up.railway.app/api/payments/make-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-    }
-  
-    paymentForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const selectedMethod = paymentMethod.value;
-      const paymentAmount = parseFloat(document.getElementById("paymentAmount").value);
-  
-      if (selectedMethod === "saldo") {
-        if (paymentAmount > user.balance) {
-          alert("Saldo insuficiente.");
-          return;
-        }
-  
-        user.balance -= paymentAmount;
-        user.transactions.push({
-          date: new Date().toISOString().split("T")[0],
-          type: "gasto",
-          amount: paymentAmount,
-          description: "Pago realizado con saldo",
-        });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(result.message || "Pago realizado con éxito.");
+        paymentForm.reset();
       } else {
-        user.transactions.push({
-          date: new Date().toISOString().split("T")[0],
-          type: "gasto",
-          amount: paymentAmount,
-          description: Pago realizado con tarjeta terminada en ${selectedMethod.slice(-4)},
-        });
+        throw new Error(result.error || "Error al realizar el pago.");
       }
-  
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      confirmationMessage.textContent = "Pago realizado con éxito.";
-      confirmationMessage.style.display = "block";
-      paymentForm.reset();
-    });
+    } catch (error) {
+      alert(error.message);
+    }
   });
+
+  function getCardIdFromSelection() {
+    const selectedOption = paymentMethod.options[paymentMethod.selectedIndex];
+    return selectedOption.dataset.cardId || null; 
+  }
+});

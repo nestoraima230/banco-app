@@ -27,28 +27,27 @@
 
   <div class="container mt-4">
     <h2 class="text-center text-primary fw-bold">Realiza una Transferencia</h2>
-    <form id="form-transferencia">
+    <form id="transferForm">
       <div class="mb-3">
-        <label for="emailDestinatario" class="form-label">Correo del Destinatario</label>
-        <input type="email" class="form-control" id="emailDestinatario" placeholder="correo@ejemplo.com" required>
+        <label for="sender" class="form-label">Correo del Remitente</label>
+        <input type="email" class="form-control" id="sender" placeholder="correo@ejemplo.com">
       </div>
       <div class="mb-3">
-        <label for="monto" class="form-label">Monto a Transferir</label>
-        <input type="number" class="form-control" id="monto" placeholder="Monto" required>
+        <label for="recipient" class="form-label">Correo del Destinatario</label>
+        <input type="email" class="form-control" id="recipient" placeholder="correo@ejemplo.com" required>
       </div>
       <div class="mb-3">
-        <label for="mensaje" class="form-label">Mensaje Opcional</label>
-        <textarea class="form-control" id="mensaje" rows="3" placeholder="Mensaje"></textarea>
+        <label for="amount" class="form-label">Monto a Transferir</label>
+        <input type="number" class="form-control" id="amount" placeholder="Monto" required>
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Mensaje Opcional</label>
+        <textarea class="form-control" id="message" rows="3" placeholder="Mensaje"></textarea>
       </div>
       <button type="submit" class="btn btn-primary w-100 mt-3">Realizar Transferencia</button>
     </form>
   </div>
-  <script>
-    document.getElementById('form-transferencia').addEventListener('submit', function(event) {
-      event.preventDefault();
-    
-      alert('Transferencia realizada con éxito');
-    });
-  </script>
+
+  <script src="../js/transferencias.js"></script> 
 </body>
 </html>

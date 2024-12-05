@@ -1,47 +1,75 @@
-document.getElementById('formRegistro').addEventListener('submit', async function(event) {
-  event.preventDefault(); 
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const transactionList = document.getElementById("transactionList");
+  const filterType = document.getElementById("filter-type");
+  const filterDate = document.getElementById("filter-date");
 
-  const firstName = document.getElementById('nombre').value.trim();
-  const lastName = document.getElementById('segundoNombre').value.trim() || null; 
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-
-  if (!firstName || !email || !password) {
-    alert("Por favor, complete todos los campos requeridos.");
+  if (!user) {
+    alert("Debe iniciar sesión.");
+    window.location.href = "index.html";
     return;
   }
 
-  try {
-    const response = await fetch('https://api-bank-production.up.railway.app/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-        first_name: firstName,   
-        last_name: lastName,     
-        email: email, 
-        password: password 
-      })
+  const renderTransactions = (transactions) => {
+    transactionList.innerHTML = ""; 
+
+    transactions.forEach(tx => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${tx.date}</td>
+        <td>${tx.amount}</td>
+        <td>${tx.type}</td>
+        <td>${tx.description}</td>
+      `;
+      transactionList.appendChild(tr);
     });
+  };
 
-    const result = await response.json();
+  const getTransactions = async (filter = {}) => {
+    const params = new URLSearchParams();
 
-    console.log('Respuesta de la API:', result);
-
-    if (response.ok) {
-      // Guardar información del usuario en localStorage
-      localStorage.setItem('nombre', result.first_name || '');  // Asegúrate de que 'first_name' esté en la respuesta
-      localStorage.setItem('correo', result.email || '');  // Asegúrate de que 'email' esté en la respuesta
-      localStorage.setItem('saldo', result.balance || 0);  // Asegúrate de que 'balance' esté en la respuesta
-
-      alert('Registro exitoso.');
-      window.location.href = 'dashboard.html'; 
-    } else {
-      alert(result.message || 'Error al registrar usuario. Por favor, intenta nuevamente.');
+    if (filter.date) {
+      params.append("date", filter.date);
     }
-  } catch (error) {
-    console.error('Error al conectar con la API:', error);
-    alert('Error al conectar con el servidor. Por favor, intenta nuevamente más tarde.');
-  }
+
+    if (filter.type && filter.type !== "all") {
+      params.append("type", filter.type);
+    }
+
+    try {
+      const response = await fetch(`https://api-bank-production.up.railway.app/movements/filtered?${params.toString()}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${user.token}` // Enviar el token de autenticación
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al obtener los movimientos");
+      }
+
+      const movements = await response.json();
+      renderTransactions(movements);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un problema al cargar los movimientos.");
+    }
+  };
+
+  filterType.addEventListener("change", () => {
+    getTransactions({
+      type: filterType.value,
+      date: filterDate.value,
+    });
+  });
+
+  filterDate.addEventListener("change", () => {
+    getTransactions({
+      type: filterType.value,
+      date: filterDate.value,
+    });
+  });
+
+  // Cargar los movimientos cuando la página se carga
+  getTransactions();
 });

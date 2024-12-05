@@ -1,37 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const addCardForm = document.getElementById("addCardForm");
-    const cardList = document.getElementById("cardList");
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-  
-    if (!user) {
-      alert("Debe iniciar sesión.");
-      window.location.href = "index.html";
-      return;
+  const addCardForm = document.getElementById("addCardForm");
+  const cardList = document.getElementById("cardList");
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+
+  if (!user) {
+    alert("Debe iniciar sesión.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  // Función para obtener tarjetas del servidor
+  const fetchCards = async () => {
+    try {
+      const response = await fetch(`https://api-bank-production.up.railway.app/cards/${user.id}`);
+      const cards = await response.json();
+      renderCards(cards);
+    } catch (error) {
+      console.error("Error al obtener las tarjetas:", error);
     }
-  
-    const renderCards = () => {
-      cardList.innerHTML = "";
-      user.cards?.forEach((card, index) => {
-        const li = document.createElement("li");
-        li.textContent = Tarjeta terminada en ${card.number.slice(-4)};
-        cardList.appendChild(li);
-      });
-    };
-  
-    addCardForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const cardNumber = document.getElementById("cardNumber").value;
-      const expiryDate = document.getElementById("expiryDate").value;
-      const cvv = document.getElementById("cvv").value;
-  
-      if (!user.cards) user.cards = [];
-      user.cards.push({ number: cardNumber, expiry: expiryDate, cvv });
-      localStorage.setItem("currentUser", JSON.stringify(user));
-  
-      renderCards();
-      alert("Tarjeta agregada con éxito.");
-      addCardForm.reset();
+  };
+
+  const renderCards = (cards) => {
+    cardList.innerHTML = "";
+    cards.forEach(card => {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.textContent = `Tarjeta terminada en ${card.card_number.slice(-4)}`;
+      cardList.appendChild(li);
     });
-  
-    renderCards();
+  };
+
+  addCardForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const cardNumber = document.getElementById("card-number").value;
+    const expiryDate = document.getElementById("expiry").value;
+    const cvv = document.getElementById("cvv").value;
+
+    const cardData = {
+      user_id: user.id,
+      card_number: cardNumber,
+      expiration_date: expiryDate,
+      cvv: cvv,
+    };
+
+    try {
+      const response = await fetch('https://api-bank-production.up.railway.app/cards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cardData),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("Tarjeta agregada con éxito.");
+        fetchCards(); 
+      } else {
+        alert("Error al agregar la tarjeta: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error al agregar la tarjeta:", error);
+    }
+
+    addCardForm.reset();
   });
+
+  fetchCards();
+});
