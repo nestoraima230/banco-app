@@ -17,24 +17,29 @@
     <h2 class="text-primary text-center fw-bold">Agregar Tarjeta</h2>
     <form id="addCardForm" class="mt-4">
       <div class="mb-3">
+        <label for="user-id" class="form-label">ID del Usuario</label>
+        <input type="text" class="form-control" id="user-id" readonly>
+      </div>      
+
+      <div class="mb-3">
         <label for="card-number" class="form-label">Número de tarjeta</label>
         <input type="text" class="form-control" id="card-number" placeholder="XXXX XXXX XXXX XXXX" required>
       </div>
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="expiry" class="form-label">Fecha de vencimiento</label>
-          <input type="month" class="form-control" id="expiry" required>
+          <input type="date" class="form-control" id="expiry" required>
         </div>
         <div class="col-md-6 mb-3">
           <label for="cvv" class="form-label">CVV</label>
           <input type="text" class="form-control" id="cvv" maxlength="3" placeholder="123" required>
         </div>
       </div>
+      
       <button type="submit" class="btn btn-primary w-100">Agregar Tarjeta</button>
     </form>
     <h3 class="mt-4">Mis Tarjetas</h3>
     <ul id="cardList" class="list-group mt-3">
-      <!-- Las tarjetas aparecerán aquí -->
     </ul>
   </div>
 

@@ -9,6 +9,12 @@ document.getElementById('login-form').addEventListener('submit', async function 
     return;
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("Por favor, ingresa un correo electrónico válido.");
+    return;
+  }
+    
   const loginButton = document.getElementById('submit-button');
   loginButton.disabled = true;
   loginButton.textContent = 'Iniciando sesión...';
@@ -22,10 +28,19 @@ document.getElementById('login-form').addEventListener('submit', async function 
 
     const result = await response.json();
 
+    console.log(result);
+
     if (response.ok) {
-      sessionStorage.setItem('nombre', result.first_name);
-      sessionStorage.setItem('correo', result.email);
-      sessionStorage.setItem('saldo', result.balance);
+      const userData = {
+        first_name: result.first_name,  
+        email: email,            
+        balance: result.accountBalance,  
+        id: result.accountId                            
+      };
+
+      console.log(userData); 
+
+      localStorage.setItem('currentUser', JSON.stringify(userData));
 
       alert('Inicio de sesión exitoso');
       window.location.href = 'dashboard.html'; 

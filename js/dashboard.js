@@ -1,27 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
-  function verificarDatos() {
-    const nombre = sessionStorage.getItem('nombre');
-    const correo = sessionStorage.getItem('correo');
-    const saldo = sessionStorage.getItem('saldo');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (nombre && correo && saldo) {
-      document.getElementById('nombre-usuario').innerText = `Bienvenido, ${nombre}`;
-      document.getElementById('correo-usuario').innerText = `Correo: ${correo}`;
-      document.getElementById('saldo-usuario').innerText = `$${parseFloat(saldo).toFixed(2)}`;
-    } else {
-      setTimeout(verificarDatos, 100); 
-    }
+  if (!currentUser) {
+    alert('Por favor, inicia sesión.');
+    window.location.href = 'login.html';
+    return; 
   }
 
-  verificarDatos(); 
-
-  setTimeout(() => {
-    if (!sessionStorage.getItem('nombre') || !sessionStorage.getItem('correo') || !sessionStorage.getItem('saldo')) {
-      alert('Por favor, inicia sesión.');
-      window.location.href = 'login.html';
-    }
-  }, 3000); 
+  document.getElementById('nombre-usuario').innerText = `Bienvenido, ${currentUser.first_name}`;
+  document.getElementById('correo-usuario').innerText = `Correo: ${currentUser.email}`;
+  document.getElementById('saldo-usuario').innerText = `$${parseFloat(currentUser.balance).toFixed(2)}`;
 });
+
 
 function cerrarSesion() {
   if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {

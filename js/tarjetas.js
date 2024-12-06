@@ -1,15 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addCardForm = document.getElementById("addCardForm");
   const cardList = document.getElementById("cardList");
+  
   const user = JSON.parse(localStorage.getItem("currentUser"));
 
   if (!user) {
     alert("Debe iniciar sesión.");
-    window.location.href = "index.html";
+    window.location.href = "login.html";
     return;
   }
 
-  // Función para obtener tarjetas del servidor
+  document.getElementById("user-id").value = user.id;
+
   const fetchCards = async () => {
     try {
       const response = await fetch(`https://api-bank-production.up.railway.app/cards/${user.id}`);
@@ -37,14 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const cvv = document.getElementById("cvv").value;
 
     const cardData = {
-      user_id: user.id,
+      user_id: user.id, 
       card_number: cardNumber,
       expiration_date: expiryDate,
       cvv: cvv,
     };
 
     try {
-      const response = await fetch('https://api-bank-production.up.railway.app/cards', {
+      const response = await fetch('https://api-bank-production.up.railway.app/api/cards', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,12 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
       if (response.ok) {
         alert("Tarjeta agregada con éxito.");
-        fetchCards(); 
+        fetchCards(); // Refresca las tarjetas
       } else {
         alert("Error al agregar la tarjeta: " + result.message);
       }
     } catch (error) {
       console.error("Error al agregar la tarjeta:", error);
+      alert("Error al conectar con el servidor");
     }
 
     addCardForm.reset();
