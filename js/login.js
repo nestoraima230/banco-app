@@ -14,7 +14,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
     alert("Por favor, ingresa un correo electrónico válido.");
     return;
   }
-    
+
   const loginButton = document.getElementById('submit-button');
   loginButton.disabled = true;
   loginButton.textContent = 'Iniciando sesión...';
@@ -28,24 +28,22 @@ document.getElementById('login-form').addEventListener('submit', async function 
 
     const result = await response.json();
 
-    console.log(result);
-
     if (response.ok) {
       const userData = {
-        first_name: result.first_name,  
-        email: email,            
-        balance: result.accountBalance,  
-        id: result.accountId                            
+        email: email,
+        token: result.token,  
+        balance: result.accountBalance,
+        accountId: result.accountId,
       };
-
-      console.log(userData); 
 
       localStorage.setItem('currentUser', JSON.stringify(userData));
 
+      console.log(userData)
+
       alert('Inicio de sesión exitoso');
-      window.location.href = 'dashboard.html'; 
+      window.location.href = 'dashboard.html';
     } else {
-      alert(result.message || 'Error al iniciar sesión');
+      alert(result.error || 'Error al iniciar sesión');
     }
   } catch (error) {
     console.error('Error:', error);

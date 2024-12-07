@@ -3,19 +3,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!currentUser) {
     alert('Por favor, inicia sesión.');
-    window.location.href = 'login.html';
+    window.location.href = 'login.html';  
     return; 
   }
 
-  document.getElementById('nombre-usuario').innerText = `Bienvenido, ${currentUser.first_name}`;
   document.getElementById('correo-usuario').innerText = `Correo: ${currentUser.email}`;
   document.getElementById('saldo-usuario').innerText = `$${parseFloat(currentUser.balance).toFixed(2)}`;
 });
 
-
 function cerrarSesion() {
   if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
-    sessionStorage.clear();
+    localStorage.clear();
+
     window.location.href = 'login.html';
   }
 }

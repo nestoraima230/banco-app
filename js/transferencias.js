@@ -4,15 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const senderEmailField = document.getElementById("sender");
   const user = JSON.parse(localStorage.getItem("currentUser"));
 
-  // Verificar que el objeto `user` esté bien cargado y que `balance` sea válido
-  console.log(user);  // Verifica si el usuario está cargado correctamente
+  console.log(user);  
   if (user && user.balance) {
     console.log("Balance del usuario:", user.balance);
   } else {
     console.log("No se encontró balance del usuario o el objeto `user` es inválido");
   }
 
-  // Rellenar el campo de correo del remitente si está disponible
   if (user && user.email) {
     senderEmailField.value = user.email;
   }
@@ -69,16 +67,4 @@ document.addEventListener("DOMContentLoaded", () => {
     transferForm.reset(); 
   });
 
-  function actualizarTabla(transaccion) {
-    const table = document.getElementById("tablaMovimientos");
-    const newRow = table.insertRow();
-
-    newRow.innerHTML = `
-      <td>${transaccion.senderEmail}</td>
-      <td>${transaccion.receiverEmail}</td>
-      <td>${transaccion.amount}</td>
-      <td>${transaccion.description || 'Sin mensaje'}</td>
-      <td>${new Date(transaccion.date).toLocaleString()}</td>
-    `;
-  }
 });

@@ -1,28 +1,37 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const paymentForm = document.querySelector("form");
+document.addEventListener("DOMContentLoaded", function () {
+  const paymentForm = document.getElementById("payment-form");
   const paymentMethod = document.getElementById("payment-method");
 
-  const userId = localStorage.getItem("userId"); 
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  console.log("currentUser:", currentUser); // Para depuración
 
-  if (!userId) {
+  if (!currentUser || !currentUser.accountId) {
     alert("Debe iniciar sesión.");
-    window.location.href = "index.html";
+    window.location.href = "login.html";
     return;
   }
 
   paymentForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const selectedMethod = paymentMethod.value;
     const amount = parseFloat(document.getElementById("amount").value);
     const description = `Pago realizado con ${selectedMethod === "saldo" ? "saldo" : "tarjeta"}`;
 
+    if (isNaN(amount) || amount <= 0) {
+      alert("Por favor, ingresa un monto válido.");
+      return;
+    }
+
     const payload = {
-      userId,
-      paymentMethodId: selectedMethod === "saldo" ? 1 : 2, // 1: Saldo, 2: Tarjeta
+      userId: currentUser.accountId,
+      paymentMethodId: selectedMethod === "saldo" ? 1 : 2,
       amount,
       description,
       cardId: selectedMethod === "tarjeta" ? getCardIdFromSelection() : null,
     };
+
+    console.log("Payload:", payload); // Depuración
 
     try {
       const response = await fetch("https://api-bank-production.up.railway.app/api/payments/make-payment", {
@@ -46,6 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getCardIdFromSelection() {
     const selectedOption = paymentMethod.options[paymentMethod.selectedIndex];
-    return selectedOption.dataset.cardId || null; 
+    return selectedOption.dataset.cardId || null;
   }
 });

@@ -1,8 +1,8 @@
-document.getElementById('formRegistro').addEventListener('submit', async function(event) {
-  event.preventDefault(); 
+document.getElementById('formRegistro').addEventListener('submit', async function (event) {
+  event.preventDefault();
 
   const firstName = document.getElementById('nombre').value.trim();
-  const lastName = document.getElementById('segundoNombre').value.trim() || null; 
+  const lastName = document.getElementById('segundoNombre').value.trim() || null;
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
 
@@ -15,33 +15,26 @@ document.getElementById('formRegistro').addEventListener('submit', async functio
     const response = await fetch('https://api-bank-production.up.railway.app/api/auth/register', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        first_name: firstName,   
-        last_name: lastName,     
-        email: email, 
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
         password: password 
-      })
+      }),
     });
 
     const result = await response.json();
 
-    console.log('Respuesta de la API:', result);
-
     if (response.ok) {
-      
-      localStorage.setItem('nombre', result.first_name);
-      localStorage.setItem('correo', result.email);
-      localStorage.setItem('saldo', result.balance);  
-
-      alert('Registro exitoso.');
-      window.location.href = 'dashboard.html'; 
+      alert('Registro exitoso');
+      window.location.href = 'login.html';
     } else {
-      alert(result.message || 'Error al registrar usuario. Por favor, intenta nuevamente.');
+      alert(result.error || 'Error al registrar el usuario. Intenta nuevamente.');
     }
   } catch (error) {
     console.error('Error al conectar con la API:', error);
-    alert('Error al conectar con el servidor. Por favor, intenta nuevamente más tarde.');
+    alert('Error al registrar usuario. Intenta nuevamente más tarde.');
   }
 });
