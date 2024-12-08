@@ -37,3 +37,10 @@ Banco App es una aplicación de banca en línea que permite a los usuarios reali
 - **Realiza los cambios y commit**: git commit -am 'New branch'
 - **Sube tus cambios**: git push origin nueva-rama
 - **Abre un Pull Request en GitHub**
+
+## Ingresar por medio del usuario:
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
