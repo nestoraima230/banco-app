@@ -7,7 +7,7 @@ document.getElementById('formRegistro').addEventListener('submit', async functio
   const password = document.getElementById('password').value.trim();
 
   if (!firstName || !email || !password) {
-    alert("Por favor, complete todos los campos requeridos.");
+    alert("Por favor, completa todos los campos requeridos");
     return;
   }
 

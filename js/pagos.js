@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message || "Pago realizado con éxito.");
+        alert(result.message || "Pago realizado con éxito");
         paymentForm.reset();
       } else {
         throw new Error(result.error || "Error al realizar el pago.");

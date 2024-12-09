@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const typeMap = {
     income: 1,
     expense: 2,
-    transfer: 3
+    transfer: 3,
   };
 
   const renderTransactions = (transactions) => {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
           timeStyle: "short",
         })}</td>
         <td class="${tx.transaction_type_id === 1 ? 'text-success' : 'text-danger'}">
-          $${amount.toFixed(2)} <!-- Asegurarse que amount es numérico -->
+          $${amount.toFixed(2)}
         </td>
         <td>${
           tx.transaction_type_id === 1
@@ -56,11 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams();
 
     if (filter.type && filter.type !== "all") {
-      params.append("type", typeMap[filter.type]);
+      params.append("type", filter.type);
     }
 
     if (filter.date) {
-      const formattedDate = new Date(filter.date).toISOString().split('T')[0];  
+      const formattedDate = new Date(filter.date).toISOString().split('T')[0];
       if (!isNaN(new Date(formattedDate))) {
         params.append("date", formattedDate);
       } else {
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = user.token;  
 
     if (!token) {
-      alert("El token de usuario no está disponible. Por favor, inicie sesión.");
+      alert("El token de usuario no está disponible. Por favor, inicia sesión.");
       return;
     }
 
@@ -80,14 +80,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      console.log("Parámetros de la solicitud:", params.toString());  
-      console.log("Token:", token); 
+      console.log("Parámetros de la solicitud:", params.toString());
+      console.log("Token:", token);
 
       const response = await fetch(`https://api-bank-production.up.railway.app/api/movements/filtered?${params.toString()}`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,  
-        }
+          "Authorization": `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
@@ -97,14 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const movements = await response.json();
-      console.log("Movimientos recibidos:", movements); 
-      renderTransactions(movements);  
+      console.log("Movimientos recibidos:", movements);
+      renderTransactions(movements);
     } catch (error) {
       console.error("Error:", error);
       alert("Hubo un problema al cargar los movimientos.");
     } finally {
       if (loadingIndicator) {
-        loadingIndicator.classList.add("d-none");  
+        loadingIndicator.classList.add("d-none");
       }
     }
   };
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   clearFiltersButton.addEventListener("click", () => {
     filterType.value = "all";
     filterDate.value = "";
-    getTransactions(); 
+    getTransactions();
   });
 
   getTransactions(); 

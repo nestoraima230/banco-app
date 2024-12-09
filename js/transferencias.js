@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log(user);  
   if (user && user.balance) {
-    console.log("Balance del usuario:", user.balance);
+    console.log("Saldo del usuario:", user.balance);
   } else {
-    console.log("No se encontró balance del usuario o el objeto `user` es inválido");
+    console.log("No se encontró el saldo del usuario");
   }
 
   if (user && user.email) {
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Monto ingresado:", amount);
 
     if (!user || !user.balance || amount <= 0 || amount > user.balance) {
-      alert("Monto inválido o balance insuficiente.");
+      alert("Monto inválido o saldo insuficiente.");
       return;
     }
 
