@@ -30,10 +30,10 @@ document.getElementById('login-form').addEventListener('submit', async function 
 
     if (response.ok) {
       const userData = {
+        id: result.accountId,  // Asignamos 'accountId' a 'id'
         email: email,
         token: result.token,  
         balance: result.accountBalance,
-        accountId: result.accountId,
       };
 
       localStorage.setItem('currentUser', JSON.stringify(userData));
