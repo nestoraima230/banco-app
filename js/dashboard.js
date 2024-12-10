@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
 function cerrarSesion() {
   if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
     localStorage.clear();
-
     window.location.href = 'login.html';
   }
 }

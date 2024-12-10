@@ -27,18 +27,18 @@ document.getElementById('login-form').addEventListener('submit', async function 
     });
 
     const result = await response.json();
-
     if (response.ok) {
       const userData = {
-        id: result.accountId,  // Asignamos 'accountId' a 'id'
+        id: result.accountId,  
         email: email,
         token: result.token,  
         balance: result.accountBalance,
       };
 
+      // Guardar los datos del usuario en localStorage
       localStorage.setItem('currentUser', JSON.stringify(userData));
 
-      console.log(userData)
+      console.log(userData);
 
       alert('Inicio de sesión exitoso');
       window.location.href = 'dashboard.html';

@@ -16,17 +16,30 @@
   <div class="container mt-4">
     <h2 class="text-primary text-center fw-bold">Realizar Pago</h2>
     <form id="payment-form" class="mt-4">
+      <!-- Selección del Método de Pago -->
       <div class="mb-3">
         <label for="payment-method" class="form-label">Método de Pago</label>
         <select class="form-select" id="payment-method" required>
           <option value="saldo">Saldo</option>
-          <option value="tarjeta" data-card-id="12345">Tarjeta</option> 
+          <!-- Las tarjetas se cargarán dinámicamente -->
         </select>
       </div>
+
+      <!-- Selección de Servicio -->
+      <div class="mb-3">
+        <label for="service" class="form-label">Servicio</label>
+        <select class="form-select" id="service" required>
+          <option value="">Seleccionar Servicio</option>
+          <!-- Aquí los servicios se cargarán dinámicamente -->
+        </select>
+      </div>
+
+      <!-- Monto del Pago -->
       <div class="mb-3">
         <label for="amount" class="form-label">Monto</label>
         <input type="number" class="form-control" id="amount" placeholder="$0.00" required>
       </div>
+
       <button type="submit" class="btn btn-primary w-100">Confirmar Pago</button>
     </form>
   </div>
